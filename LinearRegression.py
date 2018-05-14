@@ -16,7 +16,7 @@ class LinearRegression:
 
         return self
 
-    def fit_gd(self, X_train, y_train, eta=0.01, n_iters=10000):
+    def fit_gd(self, X_train, y_train, eta=1e-4, n_iters=10000):
 
         def J(theta, X_b, y):
             try:

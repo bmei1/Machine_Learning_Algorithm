@@ -56,7 +56,7 @@ class LinearRegression:
         self.coefficient = self._theta[1:]
 
     # Stochastic Gradient Descent    
-    def fit_sgd(self, X_train, y_train, a=10, b=100, n_iters=10000):
+    def fit_sgd(self, X_train, y_train, a=10, b=100, n_iters=10):
 
         def dJ_sgd(theta, X_b_i, y_i): # for only one data
             return X_b_i * (X_b_i.dot(theta) - y_i) * 2
@@ -70,9 +70,13 @@ class LinearRegression:
             m = len(X_b)
 
             for cur_iter in range(n_iters):
-                rand_i = np.random.random(m)
-                gradient = dJ_sgd(theta, X_b[rand_i], y[rand_i])
-                theta = theta - learning_rate(cur_iter) * gradient
+                # make sure all the instances have been used
+                indexes = np.random.permutation(m)
+                X_b_new = X_b[indexes]
+                y_new = y[indexes]
+                for i range(m):
+                    gradient = dJ_sgd(theta, X_b_new[i], y_new[i])
+                    theta = theta - learning_rate(cur_iter * m + i) * gradient
             
             return theta
 

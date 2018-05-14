@@ -15,7 +15,8 @@ class LinearRegression:
         self.coefficient = self._theta[1:]
 
         return self
-
+    
+    # Gradient Descent
     def fit_gd(self, X_train, y_train, eta=1e-4, n_iters=10000):
 
         def J(theta, X_b, y):
@@ -53,6 +54,34 @@ class LinearRegression:
         self._theta = gradient_descent(X_b, y_train, initial_theta, eta, n_iters=10000)
         self.interception = self._theta[0]
         self.coefficient = self._theta[1:]
+
+    # Stochastic Gradient Descent    
+    def fit_sgd(self, X_train, y_train, a=10, b=100, n_iters=10000):
+
+        def dJ_sgd(theta, X_b_i, y_i): # for only one data
+            return X_b_i * (X_b_i.dot(theta) - y_i) * 2
+
+        def sgd(X_b, y, initial_theta, n_iters, a=10, b=100):
+
+            def learning_rate(t):
+                return a / (t + b)
+            
+            theta = initial_theta
+            m = len(X_b)
+
+            for cur_iter in range(n_iters):
+                rand_i = np.random.random(m)
+                gradient = dJ_sgd(theta, X_b[rand_i], y[rand_i])
+                theta = theta - learning_rate(cur_iter) * gradient
+            
+            return theta
+
+        X_b = np.hstack([np.ones((len(X_train), 1)), X_train])
+        initial_theta = np.random.random(X_b.shape[1])
+        self._theta = sgd(X_b, y_train, initial_theta, n_iters, a, b)
+        self.interception = self._theta[0]
+        self.coefficient = self._theta[1:]
+
 
     def predict(self, X_predict):
         X_b = np.hstack([np.ones((len(X_predict), 1)), X_predict])

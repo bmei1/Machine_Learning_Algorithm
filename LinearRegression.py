@@ -74,7 +74,7 @@ class LinearRegression:
                 indexes = np.random.permutation(m)
                 X_b_new = X_b[indexes]
                 y_new = y[indexes]
-                for i range(m):
+                for i in range(m):
                     gradient = dJ_sgd(theta, X_b_new[i], y_new[i])
                     theta = theta - learning_rate(cur_iter * m + i) * gradient
             

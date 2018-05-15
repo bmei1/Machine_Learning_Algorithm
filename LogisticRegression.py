@@ -16,7 +16,7 @@ class LogisticRegression:
         def J(theta, X_b, y):
             y_hat = self._sigmoid(X_b.dot(theta))
             try:
-                return - np.sum(y * np.log(y_hat) + (1 - y) * np.log(1 - y_hat)) / len(y)
+                return  -1 * np.sum(y * np.log(y_hat) + (1 - y) * np.log(1 - y_hat)) / len(y)
             except:
                 return float('inf')
         
@@ -42,13 +42,6 @@ class LogisticRegression:
         self._theta = gradient_descent(X_b, y_train, initial_theta, eta, n_iters=10000)
         self.interception = self._theta[0]
         self.coefficient = self._theta[1:]
-
-        X_b = np.hstack([np.ones((len(X_train), 1)), X_train])
-        initial_theta = np.random.random(X_b.shape[1])
-        self._theta = sgd(X_b, y_train, initial_theta, n_iters, a, b)
-        self.interception = self._theta[0]
-        self.coefficient = self._theta[1:]
-
 
     def predict_proba(self, X_predict):
         X_b = np.hstack([np.ones((len(X_predict), 1)), X_predict])
